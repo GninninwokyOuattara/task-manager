@@ -44,7 +44,7 @@ router.get("/user/:id", (req, res) => {
 //login
 router.post("/users/login", async (req, res) => {
     //test
-    console.log("login endpoint : " + req.body.password);
+    // console.log("login endpoint : " + req.body.password);
     try {
         const user = await User.findByCredentials(
             req.body.email,
@@ -57,7 +57,7 @@ router.post("/users/login", async (req, res) => {
             token,
         });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(400).send({
             error,
         });
@@ -92,7 +92,7 @@ router.post("/users/logoutAll", auth, async (req, res) => {
 
 //post user
 router.post("/users", async (req, res) => {
-    console.log(req.body.password);
+    // console.log(req.body.password);
     const user = new User(req.body);
     try {
         await user.save();
@@ -115,7 +115,7 @@ router.post("/users", async (req, res) => {
 
 //refactored update profile route
 router.patch("/users/me", auth, async (req, res) => {
-    console.log(req.user);
+    // console.log(req.user);
     const updates = Object.keys(req.body);
     const updatesAllowed = ["name", "age", "email", "password"];
     const isValidOperation = updates.every((update) => {
@@ -123,7 +123,7 @@ router.patch("/users/me", auth, async (req, res) => {
     });
 
     if (!isValidOperation) {
-        res.status(400).send({ error: "Non existant field" });
+        return res.status(400).send({ error: "Non existant field" });
     }
 
     try {
@@ -134,8 +134,8 @@ router.patch("/users/me", auth, async (req, res) => {
         const user = req.user;
         res.send(user);
     } catch (error) {
-        console.log(error);
-        res.status(400).send(error);
+        // console.log(error);
+        res.status(400).send(error.message);
     }
 });
 

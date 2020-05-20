@@ -26,17 +26,19 @@ router.get("/tasks", auth, async (req, res) => {
     //req.query.completed
     //user in req.user (auth)
 
-    console.log(req.query);
+    // console.log(req.query);
 
     const match = {};
     const sort = {};
 
-    const sortString = req.query.sortBy.split(":");
-
-    if (sortString) {
+    if (req.query.sortBy) {
+        const sortString = req.query.sortBy.split(":");
         sort[sortString[0]] = sortString[1] === "desc" ? -1 : 1;
     }
-    console.log(sort);
+
+    // if (sortString) {
+    // }
+    // console.log(sort);
     if (req.query.completed) {
         match.completed = req.query.completed === "true";
     }
@@ -134,7 +136,7 @@ router.delete("/tasks/:id", auth, async (req, res) => {
         });
 
         if (!task) {
-            res.status(404).send();
+            return res.status(404).send();
         }
         res.send(user);
     } catch (error) {
